@@ -5,8 +5,11 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import CTA from "../components/CTA.jsx";
+import { useState } from "react";
 
 export default function About() {
+  const [textVisible, setTextVisible] = useState(null);
+
   return (
     <>
       <section className="max-container">
@@ -25,15 +28,28 @@ export default function About() {
           <h3 className="subhead-text">My Skills</h3>
 
           <div className="mt-16 flex flex-wrap gap-12">
-            {skills.map((skill) => (
+            {skills.map((skill, index) => (
               <div className="block-container w-20 h-20" key={skill.name}>
                 <div className="btn-back rounded-xl" />
-                <div className="btn-front rounded-xl flex justify-center items-center">
+                <div
+                  className={`btn-front rounded-xl flex justify-center items-center relative `}
+                  onMouseEnter={() => setTextVisible(index)}
+                  onMouseLeave={() => setTextVisible(null)}
+                >
                   <img
                     src={skill.imageUrl}
                     alt={skill.name}
-                    className="w-1/2 h-1/2 object-contain"
+                    className={`w-1/2 h-1/2 object-contain ${
+                      textVisible === index ? "blur-sm" : "blur-none"
+                    }`}
                   />
+                  <p
+                    className={`absolute text-md  ${
+                      textVisible === index ? "block" : "hidden"
+                    }`}
+                  >
+                    {skill.name}
+                  </p>
                 </div>
               </div>
             ))}
